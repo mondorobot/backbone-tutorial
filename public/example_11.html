@@ -117,7 +117,11 @@
 
     <script type="text/javascript">
       // notes:
-      //   - the event listener now causes the render when the fetch is complete
+      //   - notice the controls view and list view don't know about each other
+      //   - we thread the data/models/collections between views as a way to
+      //     connect the views together and communicate between them in a loosely coupled manner
+      //   - this example still has a potential memory leak
+      //   - extra credit: find and fix the memory leak
       var serverUrl = $('.server_url').val().replace(/\/$/, '');
 
       var CommonView = Backbone.View.extend({
