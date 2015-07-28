@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MBD :: Mondo Backbone Tutorial</title>
+
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="http://underscorejs.org/underscore-min.js"></script>
+    <script src="http://backbonejs.org/backbone-min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Backbone Evented Views and Models Together Example</h1>
+      <div class="app">
+        Loading...
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      // notes:
+      //   - the event listener now causes the render when the fetch is complete
+      var posts = new Backbone.Collection();
+
+      posts.url = '/posts';
+
+      posts.create({
+        "title": "Laborum do id quis sunt labore non reprehenderit laborum est.",
+        "contents": "Sit veniam consectetur sint sint eu consectetur sunt id et commodo adipisicing amet. Mollit incididunt cillum sunt Lorem labore in non dolore do. Irure nostrud dolore eiusmod eu quis anim esse. Nisi amet ullamco nulla nisi eiusmod sint eiusmod ullamco laboris voluptate quis mollit ullamco ut. Ipsum sint laborum fugiat nulla eu deserunt ex incididunt quis. In velit anim aliqua non consequat. Esse incididunt ad eiusmod sint irure do commodo tempor cupidatat sit incididunt.\n\nIrure tempor esse minim cupidatat occaecat do ex ullamco tempor. Est cupidatat mollit incididunt voluptate anim dolore do reprehenderit cupidatat dolor sint. Mollit et culpa aliqua cillum consectetur aute commodo. Commodo qui ut ipsum cupidatat sit veniam dolore nostrud fugiat ea aute aliqua. Commodo et irure dolor excepteur adipisicing cillum aliquip magna proident qui. Incididunt ex occaecat deserunt minim culpa commodo ad eiusmod. Nisi labore ex id non duis in mollit dolore consectetur.\n\nEiusmod pariatur incididunt nostrud esse incididunt id cupidatat. Anim fugiat excepteur voluptate laborum esse. Cillum ex fugiat sunt culpa labore pariatur labore culpa eu pariatur et nisi exercitation. Dolor officia excepteur officia cillum. Duis irure anim cillum ut reprehenderit nostrud esse voluptate reprehenderit. Excepteur mollit aute deserunt eu voluptate exercitation sunt. Et esse magna mollit quis est in anim ipsum aliqua.\n\nEt minim pariatur aliqua qui occaecat tempor nostrud ex Lorem veniam anim do Lorem. Occaecat ad dolor enim cupidatat ad duis eu. Cillum voluptate magna quis veniam Lorem esse mollit in minim ipsum eu labore deserunt quis.\n\nCulpa mollit sit sunt laboris pariatur. Deserunt ut anim et dolore sunt velit tempor. Anim elit mollit quis non nostrud adipisicing est dolore id. Occaecat laboris cillum amet est nulla fugiat quis in incididunt anim culpa nulla labore. Magna incididunt sint consectetur amet id velit enim laborum in ipsum.",
+        "author": "Sue Vasquez",
+        "author_id": 8,
+        "publish_date": "2014-11-30T17:11:00+00:00",
+        "tag_ids": [
+          9,
+          5,
+          14,
+          3
+        ],
+        "tags": [
+          "events",
+          "food",
+          "food",
+          "travel"
+        ],
+        "comments": [
+          {
+            "id": "55b689f85c4b77e11246b30e",
+            "title": "Est ullamco irure officia ex nisi.",
+            "contents": "Lorem anim anim proident cupidatat sunt do reprehenderit irure veniam ipsum in. Est mollit dolor fugiat pariatur commodo excepteur excepteur veniam est. Veniam ullamco cupidatat non aute consequat laborum ut Lorem occaecat incididunt ex est do do. Ad mollit aliqua voluptate et ipsum pariatur. Commodo mollit ex ea fugiat. Laborum proident sint ad cupidatat."
+          },
+          {
+            "id": "55b689f82ba7237b202b117e",
+            "title": "Incididunt eiusmod elit est aliqua sunt minim enim commodo minim do.",
+            "contents": "Incididunt enim ipsum sunt minim incididunt pariatur ea ipsum eu ea ex. Duis excepteur consequat proident cillum labore minim et sunt incididunt irure. Consectetur id sint laborum est consectetur qui voluptate proident laborum ex ad incididunt dolore. Ad duis cillum exercitation voluptate eu tempor ex laborum ipsum culpa excepteur deserunt commodo. Commodo veniam sit amet cupidatat non proident."
+          },
+          {
+            "id": "55b689f8281ac35cad7ea2fa",
+            "title": "Esse sint deserunt voluptate id.",
+            "contents": "Laborum enim et ex tempor ut. Consectetur incididunt officia sit cillum incididunt deserunt et laborum non velit ex fugiat cupidatat ad. Consequat ut incididunt adipisicing in cillum nulla fugiat cillum. Id nostrud do nostrud consequat aliqua. Est sit culpa adipisicing aliqua mollit dolore velit laboris reprehenderit cupidatat. Ipsum nostrud fugiat ipsum culpa magna ut eiusmod. Sit non non id laboris consectetur mollit officia ad dolor cupidatat ullamco nisi."
+          }
+        ]
+      });
+    </script>
+  </body>
+</html>

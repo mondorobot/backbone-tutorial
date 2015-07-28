@@ -1,0 +1,68 @@
+// http://beta.json-generator.com/
+
+// posts
+[
+  {
+    'repeat:50': {
+      id: '{{index()}}',
+      title: '{{lorem(1, "sentences")}}',
+      contents: '{{lorem(5, "paragraphs")}}',
+      author: '{{firstName()}} {{surname()}}',
+      author_id: '{{integer(0, 9)}}',
+      publish_date: '{{moment.utc(this.date(new Date(2014, 0, 1), new Date())).format()}}',
+      tag_ids: [
+        {
+          'repeat:4': '{{integer(0, 14)}}'
+        }
+      ],
+      tags: [
+        {
+          'repeat:4': '{{random("food", "travel", "events", "page", "news", "people", "gadget", "review", "article", "coupon", "product", "featured")}}'
+        }
+      ],
+      comments: [
+        {
+          'repeat:3': {
+            id: '{{objectId()}}',
+            title: '{{lorem(1, "sentences")}}',
+            contents: '{{lorem(1, "paragraphs")}}'
+          }
+        }
+      ]
+    }
+  }
+]
+
+// tags
+[
+  {
+    'repeat:15': {
+      id: '{{index()}}',
+      tag: '{{lorem(1, "words")}}'
+    }
+  }
+]
+
+// authors
+[
+  {
+    'repeat:10': {
+      id: '{{index()}}',
+      name: '{{firstName()}} {{surname()}}',
+      picture: 'http://placehold.it/32x32',
+      bio: '{{lorem(3, "paragraphs")}}'
+    }
+  }
+]
+
+// comments
+[
+  {
+    'repeat:100': {
+      id: '{{index()}}',
+      post_id: '{{integer(10, 24)}}',
+      title: '{{lorem(1, "sentences")}}',
+      contents: '{{lorem(3, "paragraphs")}}'
+    }
+  }
+]

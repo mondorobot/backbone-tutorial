@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MBD :: Mondo Backbone Tutorial</title>
+
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
+    <script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="http://underscorejs.org/underscore-min.js"></script>
+    <script src="http://backbonejs.org/backbone-min.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Backbone Putting It All Together Example</h1>
+      <p>
+        <input type="text" name="server_url" value="http://localhost:3000" class="server_url">
+      </p>
+      <p>
+        <a href="#">Home</a>
+      </p>
+      <div class="app">
+        Loading...
+      </div>
+    </div>
+
+    <script type="text/template" class="home_template">
+      <h2>Home</h2>
+      <p>
+        <%= greeting %>
+      </p>
+      <p>
+        This is the "homepage" route
+      </p>
+      <form action="http://www.apple.com/" method="post">
+        <div>
+          <button class="click_me">Do something</button>
+        </div>
+      </form>
+      <p>
+        <a href="#posts">Click here for my blog</a>
+      </p>
+    </script>
+
+    <script type="text/template" class="post_controls_template">
+      <form action="/" method="post">
+        <p>
+          Filter where
+          <select name="field" class="field">
+            <option value="title">Title</option>
+            <option value="author">Author</option>
+            <option value="contents">Contents</option>
+          <select>
+          matches <input type="text" name="query" class="query">
+        </p>
+      </form>
+    </script>
+
+    <script type="text/template" class="post_list_template">
+      <thead>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Author</th>
+        <th>Published</th>
+      </thead>
+      <tbody>
+      </tbody>
+    </script>
+
+    <script type="text/template" class="post_item_template">
+      <td><%= id %></td>
+      <td><a href="#posts/<%= id %>"><%= title %></a></td>
+      <td><em><%= author %></em></td>
+      <td><strong><%= publish_date %></strong></td>
+    </script>
+
+    <script type="text/template" class="post_show_template">
+      <h2 class="text-info"><%= title %></h2>
+      <p>
+        <em><%= author %></em>
+        <strong><%= publish_date %></strong>
+      </p>
+      <p>
+        <%= contents %>
+      </p>
+      <p>
+        <a href="#posts">Back</a> | <a href="#posts/<%= id %>/edit">Edit</a>
+      </p>
+    </script>
+
+    <script type="text/template" class="post_edit_template">
+      <form action="/" method="post">
+        <p>
+          Title: <input class="model-binding" type="text" name="title" value="<%= title %>">
+        </p>
+        <p>
+          Author: <input class="model-binding" type="text" name="author" value="<%= author %>">
+          Published: <input class="model-binding" type="text" name="publish_date" value="<%= publish_date %>">
+        </p>
+        <p>
+          Contents:<br>
+          <textarea class="model-binding" cols="60" rows="15"><%= contents %></textarea>
+        </p>
+        <p>
+          <button class="save">Save</button>
+        </p>
+        <p>
+          <a href="#posts">Back</a>
+        </p>
+      </form>
+    </script>
+
+    <script type="text/javascript">
+      // notes:
+      //   - the event listener now causes the render when the fetch is complete
+      var serverUrl = $('.server_url').val().replace(/\/$/, '');
+
+      var CommonView = Backbone.View.extend({
+        'render': function() {
+          if (this.model) {
+            var data = this.model.toJSON()
+          }
+          else {
+            var data = {};
+          }
+
+          var content = this.template(data);
+
+          this.$el.html(content);
+
+          return this;
+        }
+      });
+
+      var HomeView = CommonView.extend({
+        'template': _.template($('.home_template').html()),
+
+        'events': {
+          'click .click_me': 'doSomething'
+        },
+
+        'doSomething': function(e) {
+          e.preventDefault();
+          alert('I did something!');
+        }
+      });
+
+      var PostModel = Backbone.Model.extend({
+        'urlRoot': serverUrl+'/posts'
+      });
+
+      var PostCollection = Backbone.Collection.extend({
+        'url': serverUrl+'/posts',
+
+        'parse': function(data) {
+          this.pageSize = data.length;
+
+          return data.results;
+        }
+      });
+
+      var PostEditView = CommonView.extend({
+        'template': _.template($('.post_edit_template').html()),
+
+        'events': {
+          'input .model-binding': 'update',
+          'click .save': 'save',
+        },
+
+        'initialize': function() {
+          this.listenTo(this.model, 'sync', this.render, this);
+        },
+
+        'update': function(e) {
+          var $input = $(e.currentTarget);
+
+          var field = $input.attr('name');
+          var value = $input.val();
+
+          console.log('Set: '+field+'='+value);
+
+          this.model.set(field, value);
+        },
+
+        'save': function(e) {
+          e.preventDefault();
+
+          console.log("saving...");
+
+          var data = this.model.toJSON();
+
+          this.model.save(data, {
+            'success': function() {
+              alert("Save successful.");
+            }
+          });
+        },
+      });
+
+      var PostShowView = CommonView.extend({
+        'template': _.template($('.post_show_template').html()),
+
+        'initialize': function() {
+          this.listenTo(this.model, 'sync', this.render, this);
+        },
+      });
+
+      var PostItemView = CommonView.extend({
+        'tagName': 'tr',
+
+        'template': _.template($('.post_item_template').html()),
+      });
+
+      var PostControlsView = CommonView.extend({
+        'template': _.template($('.post_controls_template').html()),
+
+        'events': {
+          'form submit': 'preventSubmit',
+          'change .field': 'runFilter',
+          'input .query': 'runFilter'
+        },
+
+        'preventSubmit': function(e) {
+          e.preventDefault();
+        },
+
+        'runFilter': function() {
+          var field = this.$('.field').val();
+          var query = this.$('.query').val();
+
+          console.log("field");
+          console.log(field);
+          console.log("query");
+          console.log(query);
+
+          var q = {};
+          q[field] = query;
+          this.collection.fetch({
+            'data': {
+              'q': q
+            }
+          });
+        },
+      });
+
+      var PostListView = CommonView.extend({
+        'tagName': 'table',
+
+        'className': 'table table-striped',
+
+        'template': _.template($('.post_list_template').html()),
+
+        'initialize': function() {
+          this.listenTo(this.collection, 'sync', this.render, this);
+        },
+
+        'render': function() {
+          CommonView.prototype.render.apply(this, arguments);
+
+          this.renderItems();
+        },
+
+        'renderItems': function() {
+          this.collection.each(this.renderItem, this);
+        },
+
+        'renderItem': function(postModel) {
+          var itemView = new PostItemView({
+            'model': postModel
+          });
+
+          this.$('tbody').append(itemView.render().$el);
+        },
+      });
+
+      var MainRouter = Backbone.Router.extend({
+        'routes': {
+          'posts/:id/edit': 'postEdit',
+          'posts/:id': 'postShow',
+          'posts': 'postList',
+          '': 'home'
+        },
+
+        'home': function() {
+          // just using a dummy model here
+          var model = new Backbone.Model({
+            'greeting': 'Bonjour'
+          });
+
+          var view = new HomeView({
+            'model': model
+          });
+
+          $('.app').html(view.render().$el);
+        },
+
+        'postList': function() {
+          var posts = new PostCollection();
+
+          var controls = new PostControlsView({
+            'collection': posts
+          });
+
+          var list = new PostListView({
+            'collection': posts
+          });
+
+          list.render();
+          controls.render();
+
+          $('.app').empty();
+          $('.app').append(controls.$el);
+          $('.app').append(list.$el);
+
+          posts.fetch();
+        },
+
+        'postShow': function(postId) {
+          var post = new PostModel({
+            'id': postId
+          });
+
+          var view = new PostShowView({
+            'model': post
+          });
+
+          $('.app').html(view.$el);
+
+          post.fetch();
+        },
+
+        'postEdit': function(postId) {
+          var post = new PostModel({
+            'id': postId
+          });
+
+          var view = new PostEditView({
+            'model': post
+          });
+
+          $('.app').html(view.$el);
+
+          post.fetch();
+        },
+      });
+
+      var router = new MainRouter();
+
+      Backbone.history.start();
+    </script>
+  </body>
+</html>

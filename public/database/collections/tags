@@ -1,0 +1,62 @@
+[
+  {
+    "id": 0,
+    "tag": "food"
+  },
+  {
+    "id": 1,
+    "tag": "travel"
+  },
+  {
+    "id": 2,
+    "tag": "page"
+  },
+  {
+    "id": 3,
+    "tag": "news"
+  },
+  {
+    "id": 4,
+    "tag": "people"
+  },
+  {
+    "id": 5,
+    "tag": "gadget"
+  },
+  {
+    "id": 6,
+    "tag": "review"
+  },
+  {
+    "id": 7,
+    "tag": "article"
+  },
+  {
+    "id": 8,
+    "tag": "coupon"
+  },
+  {
+    "id": 9,
+    "tag": "product"
+  },
+  {
+    "id": 10,
+    "tag": "featured"
+  },
+  {
+    "id": 11,
+    "tag": "meetup"
+  },
+  {
+    "id": 12,
+    "tag": "tutorial"
+  },
+  {
+    "id": 13,
+    "tag": "recipe"
+  },
+  {
+    "id": 14,
+    "tag": "event"
+  }
+]

@@ -1,0 +1,19 @@
+<form action="/" method="post">
+  <p>
+    Title: <input class="model-binding" type="text" name="title" value="<%= title %>">
+  </p>
+  <p>
+    Author: <input class="model-binding" type="text" name="author" value="<%= author %>">
+    Published: <input class="model-binding" type="text" name="publish_date" value="<%= publish_date %>">
+  </p>
+  <p>
+    Contents:<br>
+    <textarea class="model-binding" cols="60" rows="15"><%= contents %></textarea>
+  </p>
+  <p>
+    <button class="save">Save</button>
+  </p>
+  <p>
+    <a href="#posts">Back</a>
+  </p>
+</form>
